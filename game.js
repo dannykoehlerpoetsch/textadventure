@@ -19,7 +19,7 @@ let player = {
   ],
   points: 100,
 };
-
+//Feind
 let enemy = {
   name: "",
   city: "",
@@ -29,8 +29,9 @@ let enemy = {
     { weapon: "Giftpfeil", damage: 30 },
   ],
   transform: "",
-  points: 250,
+  points: 400,
 };
+// erster Bandit
 let bandit1 = {
   name: "Taschendieb",
 
@@ -42,7 +43,7 @@ let bandit1 = {
 
   points: 70,
 };
-
+// zweiter Bandit
 let bandit2 = {
   name: "Echsenmensch",
 
@@ -110,7 +111,7 @@ also dann...\n
 }
 
 // Spielerdaten abfragen über readline-sync
-
+// funktion capitalize um Nutzereingaben ordentlich anzeigen zu lassen
 function getPlayerInfo() {
   player.name = capitalize(
     rls.question(
@@ -125,13 +126,13 @@ function getPlayerInfo() {
   console.log(
     `\nDanke ${player.name}! Du kannst jedoch nicht unbewaffnet in den Kampf ziehen!\n`
   );
-
+  // Frage nach Waffen als Array => über Schleife ausgeben
   const weaponPrompts = [
     `\nNenne mir deine erste Waffe:\n> `,
     `\nNenne mir deine zweite Waffe:\n> `,
     `\nNenne mir deine dritte Waffe:\n> `,
   ];
-
+  // Schleife um Waffen zuzuordnen
   for (let i = 0; i < player.weapons.length && i < weaponPrompts.length; i++) {
     player.weapons[i].weapon = capitalize(rls.question(weaponPrompts[i]));
   }
@@ -142,7 +143,7 @@ function printPlayerInfo(player) {
   console.log(
     `\nIch fasse kurz zusammen:\nDein Name lautet ${player.name}, du lebst in der Stadt ${player.city} und ziehst in den Kampf mit folgenden Waffen:\n`
   );
-
+  // alle Waffen nochmal aufzählen und separat ausloggen
   player.weapons.forEach((weapon) => {
     console.log(
       `${weapon.weapon} - sie fügt dem Gegner ${weapon.damage} Schadenspunkte zu.`
@@ -167,6 +168,7 @@ function getEnemyInfo() {
       `\nVerzeih meine geistige Umnachtung ${player.name}...aber wie hieß noch gleich die Stadt, die es zu retten gilt?\n> `
     )
   );
+  // Feind soll sich bei Spielgewinn in die Antwort des Users verwandeln
   enemy.transform = capitalize(
     rls.question(
       `\nWas ich mich schon lange Frage - was findest du so richtig eklig und widerlich?\n>`
@@ -179,6 +181,7 @@ function getEnemyInfo() {
 // erstes Rätsel - Wort erraten
 
 function wordQuiz() {
+  // Array mit Frage/Antwort Key/Value Paaren => über Index dann nacheinander ausloggen
   const quizQuestions = [
     {
       question:
@@ -195,7 +198,7 @@ function wordQuiz() {
       answer: "loch",
     },
   ];
-
+  // Hilfsfunktion um die Fragen aus dem Arra zu stellen und die jeweilige Antwort auszugeben. Parameter sind das Frage-Objekt und die Anzahl der Versuche pro Frage
   function askQuestion(questionObj, attempts) {
     while (attempts > 0) {
       const answer = rls.question(`\n${questionObj.question}\n>`);
@@ -221,7 +224,7 @@ function wordQuiz() {
     }
     return false;
   }
-
+  // Einleitungstext ins Rätsel
   console.log(
     `\nAuf deinem Weg nach ${enemy.city} passierst du den Wörterwald von Wordwood.\nUm hindurch zu gelangen, musst du mit Intelligenz punkten.\n`
   );
@@ -234,15 +237,16 @@ function wordQuiz() {
       console.log(
         `\nDu musst folgende Frage richtig beantworten und hast insgesamt 3 Versuche!\n`
       );
-      askQuestion(question, 3);
+      askQuestion(question, 3); // Übergabe des Frage-Array und der Anzahl der Versuche an Hilfsfunktion
     });
   } else {
+    // Der Spieler muss JA sagen, also Frage solange ob er bereit ist, bis er ja sagt (nein ist keine Option)
     console.log(
       `\nDas war eine rhetorische Frage! Drücke also "j" wenn ich frage ob du bereit bist!\n`
     );
     wordQuiz();
   }
-
+  // Wenn das Rätsel vorbei ist, gib die Punktzahl an.
   console.log(
     `\nDein Punktestand beträgt ${player.points} Punkte.\nDu lässt den Wörterwald von Wordwood hinter dir und setzt deine Reise fort...\n`
   );
@@ -262,6 +266,7 @@ function mathQuiz() {
   );
 
   if (startQuiz.toLowerCase() === "j") {
+    // Hilfsfunktion um die Matheaufgaben auszugeben samt der Lösung und der Anzahl der Versuche
     function askMathQuestion(prompt, correctAnswer, attempts = 3) {
       while (attempts > 0) {
         const userAnswer = parseInt(rls.question(`\n${prompt}\n>`), 10);
@@ -315,6 +320,7 @@ function mathQuiz() {
       correctAnswer
     );
   } else {
+    // Mathequiz neu starten, wenn der User "nein" sagt
     console.log(
       `\nÄhm...nein, die "Ja/Nein" Auswahl ist rhetorisch! Drück einfach "j"!\n`
     );
@@ -337,6 +343,7 @@ Sie wird dich erst vorbeilassen, wenn du ihr Spielchen mitspielst...\n`);
   );
 
   if (startQuiz.toLowerCase() === "j") {
+    // Hilfsfunktion zum Fragen stellen, selbe Logik wie im Matherätsel
     function askLogicQuestion(sequence, nextNumber, attempts = 3) {
       while (attempts > 0) {
         const userAnswer = parseInt(
@@ -403,7 +410,7 @@ Sie wird dich erst vorbeilassen, wenn du ihr Spielchen mitspielst...\n`);
 }
 
 // Endkampf
-
+// Gegner soll seine Waffe zufällig einsetzen (mit Math.random über das Array iterieren und über den Zufallsindex Waffe wählen)
 function getRandomWeapon(person) {
   const randomIndex = Math.floor(Math.random() * person.weapons.length);
   return person.weapons[randomIndex];
@@ -424,6 +431,7 @@ function finalFight() {
       // Spieler wählt eine Waffe
       console.log("\nWähle eine Waffe:");
       const weapons = player.weapons;
+      // Zeige alle Waffen an über eine Schleife
       for (let i = 0; i < weapons.length; i++) {
         console.log(
           `${i + 1}. ${weapons[i].weapon}: fügt ${
@@ -433,8 +441,8 @@ function finalFight() {
       }
 
       const weaponChoice =
-        rls.questionInt("Gib die Nummer der Waffe ein: ") - 1;
-      const playerWeapon = weapons[weaponChoice];
+        rls.questionInt("Gib die Nummer der Waffe ein: ") - 1; // -1 um wieder auf den Index zu kommen
+      const playerWeapon = weapons[weaponChoice]; // player.weapons[index].weapon
 
       console.log(
         `\n${player.name} verwendet ${playerWeapon.weapon} mit ${playerWeapon.damage} Schaden.\n`
@@ -456,11 +464,13 @@ function finalFight() {
     }
 
     // Ergebnis des Kampfes
+    // Bei Gleichstand starte den Kampf neu und fülle die Punkte wieder auf
     if (player.points <= 0 && enemy.points <= 0) {
       console.log(`Unentschieden! Beide haben keine Punkte mehr.`);
       player.points = 200;
       enemy.points = 150;
       finalFight();
+      // Wenn der Spieler verliert => GameOver
     } else if (player.points <= 0) {
       console.clear();
 
@@ -481,7 +491,8 @@ function finalFight() {
        
                `);
       process.exit();
-    } else {
+    } // Spieler gewinnt
+    else {
       console.clear();
 
       console.log(`
