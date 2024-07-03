@@ -1,0 +1,16 @@
+{
+  "name": "abschlussprojekt",
+  "version": "1.0.0",
+  "description": "Aufgabe ist es, innerhalb von 3 Tagen ein kleines Projekt fertigzustellen um zu zeigen, was bisher in JavaScript und node.js gelernt wurde. Es soll ausschließlich im Terminal/der Konsole gearbeitet werden, nicht im Browser",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
