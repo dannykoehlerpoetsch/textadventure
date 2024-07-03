@@ -126,26 +126,33 @@ function getPlayerInfo() {
     `\nDanke ${player.name}! Du kannst jedoch nicht unbewaffnet in den Kampf ziehen!\n`
   );
 
-  player.weapons[0].weapon = capitalize(
-    rls.question(`\nNenne mir deine erste Waffe:\n> `)
-  );
-  player.weapons[1].weapon = capitalize(
-    rls.question(`\nNenne mir deine zweite Waffe:\n> `)
-  );
-  player.weapons[2].weapon = capitalize(
-    rls.question(`\nNenne mir deine dritte Waffe:\n> `)
-  );
+  const weaponPrompts = [
+    `\nNenne mir deine erste Waffe:\n> `,
+    `\nNenne mir deine zweite Waffe:\n> `,
+    `\nNenne mir deine dritte Waffe:\n> `,
+  ];
+
+  for (let i = 0; i < player.weapons.length && i < weaponPrompts.length; i++) {
+    player.weapons[i].weapon = capitalize(rls.question(weaponPrompts[i]));
+  }
 }
 
 // Spielerdaten ausgeben
 function printPlayerInfo(player) {
-  console.log(`\nIch fasse kurz zusammen:\nDein Name lautet ${player.name}, du lebst in der Stadt ${player.city} und ziehst in den Kampf mit folgenden Waffen:\n
-${player.weapons[0].weapon} - sie fügt dem Gegner ${player.weapons[0].damage} Schadenspunkte zu.
-${player.weapons[1].weapon} - sie fügt dem Gegner ${player.weapons[1].damage} Schadenspunkte zu.
-${player.weapons[2].weapon} - sie fügt dem Gegner ${player.weapons[2].damage} Schadenspunkte zu.\n`);
-  console.log(`
-Du startest mit einer Punktzahl von ${player.points} Punkten.`);
-  rls.question(`Drücke Enter zum fortfahren ↩️`);
+  console.log(
+    `\nIch fasse kurz zusammen:\nDein Name lautet ${player.name}, du lebst in der Stadt ${player.city} und ziehst in den Kampf mit folgenden Waffen:\n`
+  );
+
+  player.weapons.forEach((weapon) => {
+    console.log(
+      `${weapon.weapon} - sie fügt dem Gegner ${weapon.damage} Schadenspunkte zu.`
+    );
+  });
+
+  console.log(
+    `\nDu startest mit einer Punktzahl von ${player.points} Punkten.`
+  );
+  rls.question(`Drücke Enter zum Fortfahren ↩️`);
 }
 
 // Feind-Daten bekommen
@@ -172,6 +179,49 @@ function getEnemyInfo() {
 // erstes Rätsel - Wort erraten
 
 function wordQuiz() {
+  const quizQuestions = [
+    {
+      question:
+        "Ich bin immer hungrig, werde niemals satt. Wenn du mich fütterst, mache ich es nur noch schlimmer. Was bin ich? 🔥",
+      answer: "feuer",
+    },
+    {
+      question:
+        "Ich kann gebrochen werden, ohne dass ich jemals berührt werde. Was bin ich? 💑",
+      answer: "herz",
+    },
+    {
+      question: "Je mehr du davon nimmst, desto größer wird es. Was ist es? 🔘",
+      answer: "loch",
+    },
+  ];
+
+  function askQuestion(questionObj, attempts) {
+    while (attempts > 0) {
+      const answer = rls.question(`\n${questionObj.question}\n>`);
+      if (questionObj.answer.toLowerCase() === answer.toLowerCase()) {
+        player.points += 50;
+        console.log(
+          `\n✅ ${player.name} - du bist sehr klug! Deine Antwort war richtig und du erhältst 50 Punkte!\n`
+        );
+        return true;
+      } else {
+        attempts--;
+        if (attempts > 0) {
+          console.log(
+            `\n❌Das war leider falsch. Du hast noch ${attempts} Versuche.\n`
+          );
+        } else {
+          player.points -= 10;
+          console.log(
+            `\n❌Das war leider falsch. Du hast keine Versuche mehr und verlierst 10 Punkte.❌\n`
+          );
+        }
+      }
+    }
+    return false;
+  }
+
   console.log(
     `\nAuf deinem Weg nach ${enemy.city} passierst du den Wörterwald von Wordwood.\nUm hindurch zu gelangen, musst du mit Intelligenz punkten.\n`
   );
@@ -180,116 +230,19 @@ function wordQuiz() {
   );
 
   if (startQuiz.toLowerCase() === "j") {
-    // Erste Frage
-    const firstResult = "feuer";
-    let attempts = 3;
-
-    console.log(
-      `\nDu musst folgende Frage richtig beantworten und hast insgesamt 3 Versuche!\n`
-    );
-
-    while (attempts > 0) {
-      console.log("Beantworte die erste Frage!\n");
-      const answer = rls.question(
-        "\nIch bin immer hungrig, werde niemals satt. Wenn du mich fütterst, mache ich es nur noch schlimmer. Was bin ich? 🔥\n>"
+    quizQuestions.forEach((question, index) => {
+      console.log(
+        `\nDu musst folgende Frage richtig beantworten und hast insgesamt 3 Versuche!\n`
       );
-
-      if (firstResult.toLowerCase() === answer.toLowerCase()) {
-        player.points += 50;
-        console.log(
-          `\n✅ ${player.name} - du bist sehr klug! Deine Antwort war richtig und du erhältst 50 Punkte!\n`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Das war leider falsch. Du hast noch ${attempts} Versuche.\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Das war leider falsch. Du hast keine Versuche mehr und verlierst 10 Punkte.❌\n`
-          );
-        }
-      }
-    }
-
-    // Zweite Frage
-    const secondResult = "herz";
-    attempts = 3;
-
-    console.log(
-      `\nDu musst folgende Frage richtig beantworten und hast insgesamt 3 Versuche!\n`
-    );
-
-    while (attempts > 0) {
-      console.log("Beantworte die zweite Frage!\n");
-      const answer = rls.question(
-        "\nIch kann gebrochen werden, ohne dass ich jemals berührt werde. Was bin ich? 💑\n>"
-      );
-
-      if (secondResult.toLowerCase() === answer.toLowerCase()) {
-        player.points += 50;
-        console.log(
-          `\n✅ ${player.name} - WOW! 50 Punkte! ${enemy.name} sollte sich warm anziehen!🥊\n`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Das war leider falsch. Du hast noch ${attempts} Versuche.\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Das war leider falsch. Du hast keine Versuche mehr und verlierst 10 Punkte.❌\n`
-          );
-        }
-      }
-    }
-
-    // Dritte Frage
-    const thirdResult = "loch";
-    attempts = 3;
-
-    console.log(
-      `\nDu musst folgende Frage richtig beantworten und hast insgesamt 3 Versuche!\n`
-    );
-
-    while (attempts > 0) {
-      console.log("Beantworte die dritte und letzte Frage!\n");
-      const answer = rls.question(
-        "\nJe mehr du davon nimmst, desto größer wird es. Was ist es? 🔘\n>"
-      );
-
-      if (thirdResult.toLowerCase() === answer.toLowerCase()) {
-        player.points += 50;
-        console.log(
-          `\n✅ ${player.name} - Du bist wahrlich ein Held! 50 Punkte! 🦹‍♂️\n`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Das war leider falsch. Du hast noch ${attempts} Versuche.\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Das war leider falsch. Du hast keine Versuche mehr und verlierst 10 Punkte.❌\n`
-          );
-        }
-      }
-    }
+      askQuestion(question, 3);
+    });
   } else {
     console.log(
       `\nDas war eine rhetorische Frage! Drücke also "j" wenn ich frage ob du bereit bist!\n`
     );
     wordQuiz();
   }
+
   console.log(
     `\nDein Punktestand beträgt ${player.points} Punkte.\nDu lässt den Wörterwald von Wordwood hinter dir und setzt deine Reise fort...\n`
   );
@@ -309,110 +262,58 @@ function mathQuiz() {
   );
 
   if (startQuiz.toLowerCase() === "j") {
+    function askMathQuestion(prompt, correctAnswer, attempts = 3) {
+      while (attempts > 0) {
+        const userAnswer = parseInt(rls.question(`\n${prompt}\n>`), 10);
+        if (userAnswer === correctAnswer) {
+          player.points += 50;
+          console.log(
+            `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}\n`
+          );
+          return true;
+        } else {
+          attempts--;
+          if (attempts > 0) {
+            console.log(
+              `\n❌ Falsch! Versuch es noch einmal. Du hast noch ${attempts} Versuche.\n`
+            );
+          } else {
+            player.points -= 10;
+            console.log(
+              `\n❌ Falsch! Die richtige Antwort war ${correctAnswer}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}\n`
+            );
+          }
+        }
+      }
+      return false;
+    }
+
     // Erste Aufgabe
     let num1 = Math.floor(Math.random() * 10);
     let num2 = Math.floor(Math.random() * 10);
     let correctAnswer = num1 + num2;
-    let attempts = 3;
-
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nRechenspiel Addition: Was ist ${num1} + ${num2}? Du hast ${attempts} Versuche. ➕\n`
-        ),
-        10
-      );
-
-      if (userAnswer === correctAnswer) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}\nDie ersten Zahlen ziehen beleidigt ab. Gut gemacht ${player.name} 👍`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌ Falsch! Versuch es noch einmal. Du hast noch ${attempts} Versuche.🤞\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌ Falsch! Die richtige Antwort war ${correctAnswer}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points} 😒\n`
-          );
-        }
-      }
-    }
+    askMathQuestion(
+      `Rechenspiel Addition: Was ist ${num1} + ${num2}? ➕`,
+      correctAnswer
+    );
 
     // Zweite Aufgabe
     num1 = Math.floor(Math.random() * 10) + 1;
     num2 = Math.floor(Math.random() * 10) + 1;
     correctAnswer = num1 * num2;
-    attempts = 3;
-
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nRechenspiel Multiplikation: Was ist ${num1} * ${num2}? Du hast ${attempts} Versuche. ✖️\n`
-        ),
-        10
-      );
-
-      if (userAnswer === correctAnswer) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}\nMach weiter so ${player.name}, du schaffst das!👏`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Falsch! Versuch es noch einmal. Du hast noch ${attempts} Versuche.\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Falsch! Die richtige Antwort war ${correctAnswer}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}\n`
-          );
-        }
-      }
-    }
+    askMathQuestion(
+      `Rechenspiel Multiplikation: Was ist ${num1} * ${num2}? ✖️`,
+      correctAnswer
+    );
 
     // Dritte Aufgabe
     num1 = Math.floor(Math.random() * 50) + 1;
     num2 = Math.floor(Math.random() * 50) + 1;
     correctAnswer = num1 - num2;
-    attempts = 3;
-
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nRechenspiel Subtraktion: Was ist ${num1} - ${num2}? Du hast ${attempts} Versuche ➖.\n`
-        ),
-        10
-      );
-
-      if (userAnswer === correctAnswer) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}\nDu hast die Zahlen gebändigt und kannst deinen Weg forsetzen...`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Falsch! Versuch es noch einmal. Du hast noch ${attempts} Versuche.\n`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Falsch! Die richtige Antwort war ${correctAnswer}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}\n`
-          );
-        }
-      }
-    }
+    askMathQuestion(
+      `Rechenspiel Subtraktion: Was ist ${num1} - ${num2}? ➖`,
+      correctAnswer
+    );
   } else {
     console.log(
       `\nÄhm...nein, die "Ja/Nein" Auswahl ist rhetorisch! Drück einfach "j"!\n`
@@ -420,141 +321,83 @@ function mathQuiz() {
     mathQuiz();
   }
   console.log(
-    `\nDein Punktestand beträgt ${player.points} Punkte.\nDen Rest des Weges auf der Sraße von Zahlenhausen rennst du lieber...`
+    `\nDein Punktestand beträgt ${player.points} Punkte.\nDen Rest des Weges auf der Straße von Zahlenhausen rennst du lieber...`
   );
   rls.question(`Drücke Enter zum fortfahren ↩️`);
 }
 
 // drittes Rätsel - Logik
-
 function logicQuiz() {
   console.log(`${player.name}, ${player.city} liegt nun schon sehr weit hinter dir und am Horizont siehst du schon Türme von ${enemy.city}.\n
 Deine Waffen bei der Hand schreitest du zügig voran, als du plötzlich ein Hologramm deiner alten Mathelehrerin vor dir siehst!🕵️‍♀️ \n
 Sie wird dich erst vorbeilassen, wenn du ihr Spielchen mitspielst...\n`);
+
   const startQuiz = rls.question(
     `\n${player.name} - bereit für das nächste Rätsel? (j / n)\n>`
   );
 
   if (startQuiz.toLowerCase() === "j") {
+    function askLogicQuestion(sequence, nextNumber, attempts = 3) {
+      while (attempts > 0) {
+        const userAnswer = parseInt(
+          rls.question(
+            `\nLogisches Denkspiel: Was ist das nächste in der Sequenz: ${sequence.join(
+              ", "
+            )}, ? Du hast ${attempts} Versuche:\n> `
+          ),
+          10
+        );
+
+        if (userAnswer === nextNumber) {
+          player.points += 50;
+          console.log(
+            `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}.`
+          );
+          return true;
+        } else {
+          attempts--;
+          if (attempts > 0) {
+            console.log(
+              `\n❌Falsch! Versuche es erneut. Du hast noch ${attempts} Versuche.`
+            );
+          } else {
+            player.points -= 10;
+            console.log(
+              `\n❌Falsch! Die richtige Antwort war ${nextNumber}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}`
+            );
+          }
+        }
+      }
+      return false;
+    }
+
     // Erste Aufgabe
     let sequence = [2, 4, 8, 16];
     let nextNumber = 32;
-    let attempts = 3;
-
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nLogisches Denkspiel: Was ist das nächste in der Sequenz: ${sequence.join(
-            ", "
-          )}, ? Du hast ${attempts} Versuche:\n> `
-        ),
-        10
-      );
-
-      if (userAnswer === nextNumber) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}. Also ich hätte das nicht gewusst...`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Falsch! Versuche es erneut. Du hast noch ${attempts} Versuche.`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Falsch! Die richtige Antwort war ${nextNumber}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}`
-          );
-        }
-      }
-    }
+    askLogicQuestion(sequence, nextNumber);
 
     // Zweite Aufgabe
     sequence = [3, 6, 9, 12];
     nextNumber = 15;
-    attempts = 3;
-
     console.log(
       `Zweite Aufgabe - du stellst fest, dass deine alte Mathelehrerin noch immer extrem nervig ist.🙄\n`
     );
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nLogisches Denkspiel: Was ist das nächste in der Sequenz: ${sequence.join(
-            ", "
-          )}, ? Du hast ${attempts} Versuche:\n> `
-        ),
-        10
-      );
-
-      if (userAnswer === nextNumber) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}. ${player.name}, warum bist du so schlau?🧠`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Falsch! Versuche es erneut. Du hast noch ${attempts} Versuche.`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Falsch! Die richtige Antwort war ${nextNumber}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}`
-          );
-        }
-      }
-    }
+    askLogicQuestion(sequence, nextNumber);
 
     // Dritte Aufgabe
     sequence = [1, 1, 2, 3, 5, 8];
     nextNumber = 13;
-    attempts = 3;
-
     console.log(`Aller guten Dinge sind bekanntlich 3...\n`);
-    while (attempts > 0) {
-      const userAnswer = parseInt(
-        rls.question(
-          `\nLogisches Denkspiel: Was ist das nächste in der Sequenz: ${sequence.join(
-            ", "
-          )}, ? Du hast ${attempts} Versuche:\n> `
-        ),
-        10
-      );
-
-      if (userAnswer === nextNumber) {
-        player.points += 50;
-        console.log(
-          `\n✅ Richtig! Du hast 50 Punkte gewonnen. Gesamtpunkte: ${player.points}. Ist dein Nachname "Einstein"🤨?`
-        );
-        break;
-      } else {
-        attempts--;
-        if (attempts > 0) {
-          console.log(
-            `\n❌Falsch! Versuche es erneut. Du hast noch ${attempts} Versuche.`
-          );
-        } else {
-          player.points -= 10;
-          console.log(
-            `\n❌Falsch! Die richtige Antwort war ${nextNumber}. Du verlierst 10 Punkte. Gesamtpunkte: ${player.points}`
-          );
-        }
-      }
-    }
+    askLogicQuestion(sequence, nextNumber);
   } else {
     console.log(
       `\nWer ist hier geistig umnachtet? Rätselspiel heißt, dass du Rätsel lösen musst!\n`
     );
     logicQuiz();
   }
+
   console.log(
-    `\nDein Punktestand beträgt ${player.points} Punkte.\nDas Hologramm deiner alten Mathlehrerin löst sich in Luft auf. (Hätte sie das nur damals schon gekonnt..)`
+    `\nDein Punktestand beträgt ${player.points} Punkte.\nDas Hologramm deiner alten Mathlehrerin löst sich in Luft auf. (Hätte sie das nur damals schon gekonnt..)\n`
   );
   rls.question(`Drücke Enter zum fortfahren ↩️`);
 }
