@@ -247,7 +247,7 @@ function wordQuiz() {
   // Hilfsfunktion um die Fragen aus dem Arra zu stellen und die jeweilige Antwort auszugeben. Parameter sind das Frage-Objekt und die Anzahl der Versuche pro Frage
   function askQuestion(questionObj, attempts) {
     while (attempts > 0) {
-      const answer = rls.question(`\n${questionObj.question}\n>`);
+      const answer = rls.question(`\n${questionObj.question}\n> `);
       if (questionObj.answer.toLowerCase() === answer.toLowerCase()) {
         player.points += 50;
         console.log(
@@ -315,7 +315,7 @@ function mathQuiz() {
     // Hilfsfunktion um die Matheaufgaben auszugeben samt der Lösung und der Anzahl der Versuche
     function askMathQuestion(prompt, correctAnswer, attempts = 3) {
       while (attempts > 0) {
-        const userAnswer = parseInt(rls.question(`\n${prompt}\n>`), 10);
+        const userAnswer = parseInt(rls.question(`\n${prompt}\n> `), 10);
         if (userAnswer === correctAnswer) {
           player.points += 50;
           console.log(
