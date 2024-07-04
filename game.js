@@ -113,6 +113,23 @@ also dann...\n
 // Spielerdaten abfragen über readline-sync
 // funktion capitalize um Nutzereingaben ordentlich anzeigen zu lassen
 function getPlayerInfo() {
+  console.log(`
+      ////^\\\\\\\\
+      | ^   ^ |
+     @ (o) (o) @
+      |   <   |
+      |  ___  |
+       \_____/
+     ____|  |____
+    /    \__/    \\
+   /              \\
+  /\\_/|        |\\_/\\
+ / /  |        |  \\ \\
+( <   |        |   > )
+ \\ \\  |        |  / /
+  \\ \\ |________| / /
+   \\ \\|
+    `);
   player.name = capitalize(
     rls.question(
       `\nBevor wir die Stadt retten, verrate mir zunächst deinen Namen!\n> `
@@ -123,6 +140,16 @@ function getPlayerInfo() {
       `\nVor lauter Panik habe ich glatt vergessen, aus welcher Stadt du kommst. Die Stadt hieß...?\nGib deine Stadt ein:\n> `
     )
   );
+
+  console.log(`
+   (
+    \\
+     )
+##-------->        
+     )
+    /
+   (
+    `);
   console.log(
     `\nDanke ${player.name}! Du kannst jedoch nicht unbewaffnet in den Kampf ziehen!\n`
   );
@@ -158,6 +185,25 @@ function printPlayerInfo(player) {
 
 // Feind-Daten bekommen
 function getEnemyInfo() {
+  console.log(`
+        .-"""".
+       /       \\
+   __ /   .-.  .\\
+  /  \`\\  /   \\/\\
+  |  _ \/   .==.==.
+  | (   \  /____\__\\
+   \\ \\      (_()(_()
+    \\ \\            '---._
+     \\                   \\_
+  /\ |\`       (__)_______/
+ /  \|     /\___/
+|    \     \||VV
+|     \     \|"""",
+|      \     ______)
+\       \  /\`
+         \(
+    
+    `);
   enemy.name = capitalize(
     rls.question(
       `\nWie hast du diesen Tyrannen damals in der Schule doch gleich genannt? \nSein Name lautet:\n> `
