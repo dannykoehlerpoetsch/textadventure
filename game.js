@@ -13,9 +13,9 @@ let player = {
   city: "",
   age: 0,
   weapons: [
-    { weapon: "", damage: 10 },
-    { weapon: "", damage: 20 },
-    { weapon: "", damage: 30 },
+    { weapon: "", damage: 50 },
+    { weapon: "", damage: 80 },
+    { weapon: "", damage: 100 },
   ],
   points: 100,
 };
@@ -24,36 +24,36 @@ let enemy = {
   name: "",
   city: "",
   weapons: [
-    { weapon: "Faustschlag", damage: 10 },
-    { weapon: "Steinschleuder", damage: 20 },
-    { weapon: "Giftpfeil", damage: 30 },
+    { weapon: "Faustschlag", damage: 50 },
+    { weapon: "Steinschleuder", damage: 80 },
+    { weapon: "Giftpfeil", damage: 100 },
   ],
   transform: "",
-  points: 400,
+  points: 350,
 };
 // erster Bandit
 let bandit1 = {
   name: "Taschendieb",
 
   weapons: [
-    { weapon: "Schienbeintritt", damage: 8 },
-    { weapon: "Schubsen", damage: 16 },
-    { weapon: "Messer", damage: 24 },
+    { weapon: "Schienbeintritt", damage: 20 },
+    { weapon: "Schubsen", damage: 40 },
+    { weapon: "Messer", damage: 50 },
   ],
 
-  points: 70,
+  points: 150,
 };
 // zweiter Bandit
 let bandit2 = {
   name: "Echsenmensch",
 
   weapons: [
-    { weapon: "Scheinbeintritt", damage: 8 },
-    { weapon: "Schlag in den Nacken", damage: 16 },
-    { weapon: "Peitsche", damage: 24 },
+    { weapon: "Scheinbeintritt", damage: 20 },
+    { weapon: "Schlag in den Nacken", damage: 40 },
+    { weapon: "Peitsche", damage: 50 },
   ],
 
-  points: 70,
+  points: 150,
 };
 
 // Regeln und Intro
@@ -75,7 +75,7 @@ function rules() {
 
     `);
   console.log(`
-***Willkommen bei Mind over Evil - hier kannst du mit Intelligenz und Stärke Punkten***"\n
+***Willkommen bei Mind over Evil - hier kannst du mit Intelligenz und Stärke Punkten***\n
 Was ist passiert?\n
 ...\n
 Als du heute morgen aufgewacht bist, weißt du zuerst gar nicht was los ist...\n
@@ -171,7 +171,7 @@ function getEnemyInfo() {
   // Feind soll sich bei Spielgewinn in die Antwort des Users verwandeln
   enemy.transform = capitalize(
     rls.question(
-      `\nWas ich mich schon lange Frage - was findest du so richtig eklig und widerlich?\n>`
+      `\nWas ich mich schon lange Frage - was findest du so richtig eklig und widerlich?\n> `
     )
   );
   console.log(`${player.name} - dein Abenteuer startet genau jetzt!`);
@@ -229,7 +229,7 @@ function wordQuiz() {
     `\nAuf deinem Weg nach ${enemy.city} passierst du den Wörterwald von Wordwood.\nUm hindurch zu gelangen, musst du mit Intelligenz punkten.\n`
   );
   const startQuiz = rls.question(
-    `\n${player.name} - um ${enemy.name} zu erreichen und gegen ihn zu kämpfen, musst du 3 Rätsel lösen. Bereit? (j / n)\n>`
+    `\n${player.name} - um ${enemy.name} zu erreichen und gegen ihn zu kämpfen, musst du 3 Rätsel lösen. Bereit? (j / n)\n> `
   );
 
   if (startQuiz.toLowerCase() === "j") {
@@ -262,7 +262,7 @@ function mathQuiz() {
     \nBändige die Zahlen, um weiter zu kommen!`
   );
   const startQuiz = rls.question(
-    `\n${player.name} - bereit für das nächste Rätsel? (j / n)\n>`
+    `\n${player.name} - bereit für das nächste Rätsel? (j / n)\n> `
   );
 
   if (startQuiz.toLowerCase() === "j") {
@@ -339,7 +339,7 @@ Deine Waffen bei der Hand schreitest du zügig voran, als du plötzlich ein Holo
 Sie wird dich erst vorbeilassen, wenn du ihr Spielchen mitspielst...\n`);
 
   const startQuiz = rls.question(
-    `\n${player.name} - bereit für das nächste Rätsel? (j / n)\n>`
+    `\n${player.name} - bereit für das nächste Rätsel? (j / n)\n> `
   );
 
   if (startQuiz.toLowerCase() === "j") {
@@ -418,7 +418,7 @@ function getRandomWeapon(person) {
 
 function finalFight() {
   const startfight = rls.question(
-    `\n${player.name} - bereit für den finalen Kampf?? (j / n)\n>`
+    `\n${player.name} - bereit für den finalen Kampf?? (j / n)\n> `
   );
 
   if (startfight.toLowerCase() === "j") {
@@ -497,14 +497,15 @@ function finalFight() {
 
       console.log(`
         
-░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓███████▓▒░  
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
- ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░    ░▒▓██████▓▒░ ░▒▓██████▓▒░        ░▒▓█████████████▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-                                                                                       
+         
+          ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗
+          ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██║████╗  ██║
+           ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║██╔██╗ ██║
+            ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║██║╚██╗██║
+             ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║
+             ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝
+                                                                
+          
                                                                                        
 `);
       console.log(
@@ -635,37 +636,17 @@ function playGame() {
 
   wordQuiz();
   console.clear();
-  console.log(
-    `
+  console.log(`
     
-                                                                                           
-                                                                                           
-FFFFFFFFFFFFFFFFFFFFFF  iiii                     hhhhhhh                     tttt          
-F::::::::::::::::::::F i::::i                    h:::::h                  ttt:::t          
-F::::::::::::::::::::F  iiii                     h:::::h                  t:::::t          
-FF::::::FFFFFFFFF::::F                           h:::::h                  t:::::t          
-  F:::::F       FFFFFFiiiiiii    ggggggggg   gggggh::::h hhhhh      ttttttt:::::ttttttt    
-  F:::::F             i:::::i   g:::::::::ggg::::gh::::hh:::::hhh   t:::::::::::::::::t    
-  F::::::FFFFFFFFFF    i::::i  g:::::::::::::::::gh::::::::::::::hh t:::::::::::::::::t    
-  F:::::::::::::::F    i::::i g::::::ggggg::::::ggh:::::::hhh::::::htttttt:::::::tttttt    
-  F:::::::::::::::F    i::::i g:::::g     g:::::g h::::::h   h::::::h     t:::::t          
-  F::::::FFFFFFFFFF    i::::i g:::::g     g:::::g h:::::h     h:::::h     t:::::t          
-  F:::::F              i::::i g:::::g     g:::::g h:::::h     h:::::h     t:::::t          
-  F:::::F              i::::i g::::::g    g:::::g h:::::h     h:::::h     t:::::t    tttttt
-FF:::::::FF           i::::::ig:::::::ggggg:::::g h:::::h     h:::::h     t::::::tttt:::::t
-F::::::::FF           i::::::i g::::::::::::::::g h:::::h     h:::::h     tt::::::::::::::t
-F::::::::FF           i::::::i  gg::::::::::::::g h:::::h     h:::::h       tt:::::::::::tt
-FFFFFFFFFFF           iiiiiiii    gggggggg::::::g hhhhhhh     hhhhhhh         ttttttttttt  
-                                          g:::::g                                          
-                              gggggg      g:::::g                                          
-                              g:::::gg   gg:::::g                                          
-                               g::::::ggg:::::::g                                          
-                                gg:::::::::::::g                                           
-                                  ggg::::::ggg                                             
-                                     gggggg                                                
-
-    `
-  );
+    ███████╗██╗ ██████╗ ██╗  ██╗████████╗
+    ██╔════╝██║██╔════╝ ██║  ██║╚══██╔══╝
+    █████╗  ██║██║  ███╗███████║   ██║   
+    ██╔══╝  ██║██║   ██║██╔══██║   ██║   
+    ██║     ██║╚██████╔╝██║  ██║   ██║   
+    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+                                         
+    
+        `);
   fight(bandit1);
   console.clear();
 
@@ -697,37 +678,17 @@ FFFFFFFFFFF           iiiiiiii    gggggggg::::::g hhhhhhh     hhhhhhh         tt
   logicQuiz();
   console.clear();
 
-  console.log(
-    `
+  console.log(`
     
-                                                                                           
-                                                                                           
-FFFFFFFFFFFFFFFFFFFFFF  iiii                     hhhhhhh                     tttt          
-F::::::::::::::::::::F i::::i                    h:::::h                  ttt:::t          
-F::::::::::::::::::::F  iiii                     h:::::h                  t:::::t          
-FF::::::FFFFFFFFF::::F                           h:::::h                  t:::::t          
-  F:::::F       FFFFFFiiiiiii    ggggggggg   gggggh::::h hhhhh      ttttttt:::::ttttttt    
-  F:::::F             i:::::i   g:::::::::ggg::::gh::::hh:::::hhh   t:::::::::::::::::t    
-  F::::::FFFFFFFFFF    i::::i  g:::::::::::::::::gh::::::::::::::hh t:::::::::::::::::t    
-  F:::::::::::::::F    i::::i g::::::ggggg::::::ggh:::::::hhh::::::htttttt:::::::tttttt    
-  F:::::::::::::::F    i::::i g:::::g     g:::::g h::::::h   h::::::h     t:::::t          
-  F::::::FFFFFFFFFF    i::::i g:::::g     g:::::g h:::::h     h:::::h     t:::::t          
-  F:::::F              i::::i g:::::g     g:::::g h:::::h     h:::::h     t:::::t          
-  F:::::F              i::::i g::::::g    g:::::g h:::::h     h:::::h     t:::::t    tttttt
-FF:::::::FF           i::::::ig:::::::ggggg:::::g h:::::h     h:::::h     t::::::tttt:::::t
-F::::::::FF           i::::::i g::::::::::::::::g h:::::h     h:::::h     tt::::::::::::::t
-F::::::::FF           i::::::i  gg::::::::::::::g h:::::h     h:::::h       tt:::::::::::tt
-FFFFFFFFFFF           iiiiiiii    gggggggg::::::g hhhhhhh     hhhhhhh         ttttttttttt  
-                                          g:::::g                                          
-                              gggggg      g:::::g                                          
-                              g:::::gg   gg:::::g                                          
-                               g::::::ggg:::::::g                                          
-                                gg:::::::::::::g                                           
-                                  ggg::::::ggg                                             
-                                     gggggg                                                
-
-    `
-  );
+    ███████╗██╗ ██████╗ ██╗  ██╗████████╗
+    ██╔════╝██║██╔════╝ ██║  ██║╚══██╔══╝
+    █████╗  ██║██║  ███╗███████║   ██║   
+    ██╔══╝  ██║██║   ██║██╔══██║   ██║   
+    ██║     ██║╚██████╔╝██║  ██║   ██║   
+    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+                                         
+    
+        `);
   fight(bandit2);
   console.clear();
 
@@ -737,13 +698,15 @@ Nimm also all deinen Mut zusammen und stell dich dem Tyrannen, der ${enemy.city}
 
   console.log(`
     
-░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓███████▓▒░▒▓███████▓▒░      ░▒▓████████▓▒░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░ 
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░             ░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░     
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░             ░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░     
-░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓██████▓▒░       ░▒▓██████▓▒░ ░▒▓█▓▒░▒▓█▓▒▒▓███▓▒░▒▓████████▓▒░  ░▒▓█▓▒░     
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░     
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░     
-░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░▒▓███████▓▒░       ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░     
+
+    ██████╗  ██████╗ ███████╗███████╗    ███████╗██╗ ██████╗ ██╗  ██╗████████╗
+    ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔════╝██║██╔════╝ ██║  ██║╚══██╔══╝
+    ██████╔╝██║   ██║███████╗███████╗    █████╗  ██║██║  ███╗███████║   ██║   
+    ██╔══██╗██║   ██║╚════██║╚════██║    ██╔══╝  ██║██║   ██║██╔══██║   ██║   
+    ██████╔╝╚██████╔╝███████║███████║    ██║     ██║╚██████╔╝██║  ██║   ██║   
+    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+                                                                              
+      
                                                                                                                       
                                                                                                                       
 
